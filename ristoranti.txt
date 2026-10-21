@@ -28,7 +28,6 @@ Osteria Il Cadraio | Genova | 4.3 |
 Le Rune | Genova | 4.7 | 
 Locanda Antichi Sapori | Genova | 4.4 | 
 Ostaia De Banchi | Genova | 4.5 | 
-Osteria Amori E Sapori | Genova | 4.2 | 
 Tamashi Fish Market | Genova | 4.9 | 
 Trattoria Del Parroco Dal 1872 | Genova | 4.2 | 
 Trattoria San Carlo | Genova | 4.5 | 
