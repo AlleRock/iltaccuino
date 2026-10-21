@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+  <meta name="theme-color" content="#160f0e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Il Taccuino">
+  <meta name="description" content="La tua raccolta personale di ristoranti, ordinata per zone. Aperta anche offline.">
+  <title>Il Taccuino · Ristoranti</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme:dark;
+      --bg:#160f0e; --raised:#211715; --card:#2b1e19; --card-hover:#33241e;
+      --line:#483329; --accent:#e3b777; --accent-dark:#ad8351;
+      --text:#f5eadd; --dim:#b6a192; --deep:#795d4a;
+      --green:#8cc4a2;
+      --r:15px;
+    }
+    * {box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+    html,body {height:100%; margin:0;}
+    body {
+      background:var(--bg); color:var(--text);
+      font-family:'DM Sans',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+      overflow:hidden; overscroll-behavior:none;
+    }
+    .app-shell {
+      max-width:680px; height:100vh; height:100dvh; margin:0 auto;
+      display:flex; flex-direction:column; position:relative; background:var(--bg);
+      box-shadow:0 0 80px #05030320;
+    }
+    .top {
+      z-index:5; flex:none; padding:calc(env(safe-area-inset-top, 0px) + 17px) 20px 12px;
+      background:linear-gradient(180deg,#201411 0%,var(--bg) 55%);
+      border-bottom:1px solid var(--line);
+    }
+    .brand {display:flex; align-items:center; gap:13px;}
+    .logo {
+      width:47px; height:47px; border:1px solid #956c42; background:#39271d;
+      display:grid; place-items:center; border-radius:15px; flex:none;
+      box-shadow:inset 0 0 15px #0002;
+    }
+    .logo svg {width:27px; height:27px; stroke:var(--accent); fill:none; stroke-width:1.75; stroke-linecap:round;}
+    .eyebrow {font-size:10px; text-transform:uppercase; letter-spacing:2px; color:var(--accent); font-weight:700; margin-bottom:1px;}
+    h1,h2,h3,p {margin:0;}
+    h1,h2,h3,.serif {font-family:'Fraunces',Georgia,serif;}
+    h1 {font-size:28px; font-weight:600; line-height:1.11; letter-spacing:.15px;}
+    .subline {display:flex; align-items:center; justify-content:space-between; margin:11px 0 16px; gap:10px;}
+    .intro {color:var(--dim); font-size:12.5px; line-height:1.4;}
+    .refresh {font:600 12px 'DM Sans',sans-serif; color:var(--accent); background:transparent; padding:5px 0 5px 8px; border:none; white-space:nowrap; cursor:pointer;}
+    .refresh:disabled {opacity:.5; cursor:wait;}
+    .search {position:relative; margin-bottom:13px;}
+    .search svg {position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--dim); width:19px; height:19px; pointer-events:none;}
+    .search input {
+      width:100%; height:47px; background:var(--raised); border:1px solid var(--line);
+      border-radius:13px; padding:0 43px 0 42px; color:var(--text); outline:0;
+      font:400 15px 'DM Sans',sans-serif; -webkit-appearance:none;
+    }
+    .search input::placeholder {color:#978379;}
+    .search input:focus {border-color:var(--accent-dark); box-shadow:0 0 0 2px #e3b77714;}
+    .clear {position:absolute; right:9px; top:50%; transform:translateY(-50%); padding:8px; background:none; color:var(--dim); border:0; font-size:16px; cursor:pointer;}
+    .clear[hidden] {display:none;}
+    .tabs {display:flex; gap:7px; overflow-x:auto; scrollbar-width:none; padding:0 0 13px;}
+    .tabs::-webkit-scrollbar {display:none;}
+    .tab {
+      background:var(--raised); color:var(--dim); border:1px solid var(--line);
+      padding:8px 13px; border-radius:50px; cursor:pointer; font:700 12px 'DM Sans',sans-serif;
+      white-space:nowrap; flex:none; transition:background .15s,border-color .15s;
+    }
+    .tab.active {color:#20130d; background:var(--accent); border-color:var(--accent);}
+    .controls {display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 122px); gap:9px;}
+    label.control {display:block; min-width:0;}
+    label.control span {display:block; color:var(--dim); font-size:10px; font-weight:700; letter-spacing:1.1px; text-transform:uppercase; margin:0 0 6px 2px;}
+    .select-wrap {position:relative;}
+    .select-wrap::after {content:""; width:8px; height:8px; position:absolute; right:15px; top:14px; border-right:1.8px solid var(--accent); border-bottom:1.8px solid var(--accent); transform:rotate(45deg); pointer-events:none;}
+    select {
+      width:100%; height:42px; min-width:0; padding:0 30px 0 12px;
+      appearance:none; -webkit-appearance:none; border:1px solid var(--line);
+      border-radius:11px; background:var(--raised); color:var(--text); outline:0;
+      font:600 12.5px 'DM Sans',sans-serif; text-overflow:ellipsis;
+    }
+    select:focus {border-color:var(--accent-dark);}
+    .list-head {display:flex; justify-content:space-between; align-items:center; gap:12px; margin:15px 20px 9px; flex:none;}
+    .result-count {color:var(--dim); font-size:12px; letter-spacing:.1px;}
+    .result-count b {color:var(--accent); font-weight:700;}
+    .connection {font-size:10.5px; color:var(--green); opacity:.95; white-space:nowrap;}
+    .connection.is-offline {color:var(--accent);}
+    main {flex:1; min-height:0; padding:0 20px calc(28px + env(safe-area-inset-bottom,0px)); overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; scrollbar-width:thin; scrollbar-color:var(--line) transparent;}
+    .restaurant-card {
+      text-align:left; position:relative; width:100%; border:1px solid #3a2922;
+      background:var(--card); border-radius:var(--r); padding:16px 16px 15px 17px;
+      color:inherit; margin:0 0 9px; cursor:pointer;
+      display:flex; gap:8px; align-items:center; justify-content:space-between;
+      font-family:inherit; box-shadow:0 3px 10px #0000000a;
+    }
+    .restaurant-card::before {content:""; position:absolute; width:3px; background:var(--accent-dark); left:0; top:15px; bottom:15px; border-radius:0 3px 3px 0;}
+    .restaurant-card:active,.restaurant-card:hover {background:var(--card-hover);}
+    .card-info {flex:1; min-width:0;}
+    .card-name {font:600 17px/1.24 'Fraunces',Georgia,serif; overflow-wrap:anywhere;}
+    .card-place {font-size:12px; color:var(--dim); margin-top:6px; line-height:1.35;}
+    .card-area {font-size:10px; color:#998270; margin-top:5px; line-height:1.3;}
+    .card-right {flex:none; text-align:center; min-width:45px; padding-left:5px;}
+    .score {display:flex; justify-content:center; align-items:center; gap:4px; color:var(--accent); font-size:17px; font-weight:700; font-variant-numeric:tabular-nums;}
+    .score .star {font-size:12px;}
+    .score-label {font-size:9px; letter-spacing:.45px; text-transform:uppercase; color:var(--dim); margin-top:3px;}
+    .chev {color:var(--deep); font-size:19px; margin-top:8px; line-height:1;}
+    .empty {padding:65px 15px; text-align:center; color:var(--dim); font-size:14px; line-height:1.65;}
+    .empty .emoji {display:block; font-size:40px; margin-bottom:8px;}
+    .empty strong {display:block; color:var(--text); font:600 20px 'Fraunces',serif; margin:4px 0;}
+    .overlay {position:fixed; inset:0; background:#090503b8; backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px); z-index:50; opacity:0; pointer-events:none; transition:opacity .2s;}
+    .overlay.show {opacity:1; pointer-events:auto;}
+    .sheet {position:absolute; left:50%; width:min(100%,680px); bottom:0; max-height:88vh; max-height:88dvh; transform:translate(-50%,100%); background:var(--raised); border:1px solid var(--line); border-bottom:0; border-radius:24px 24px 0 0; padding:11px 23px calc(26px + env(safe-area-inset-bottom,0px)); overflow:auto; transition:transform .28s cubic-bezier(.28,.75,.24,1);}
+    .overlay.show .sheet {transform:translate(-50%,0);}
+    .grabber {width:37px; height:4px; background:#705346; border-radius:9px; margin:0 auto 22px;}
+    .x-btn {position:absolute; right:18px; top:19px; background:#37271f; color:var(--dim); border:0; border-radius:50%; width:33px; height:33px; font-size:16px; cursor:pointer;}
+    .sheet-kicker {display:flex; align-items:center; gap:7px; color:var(--accent); font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1.6px; margin-bottom:11px; padding-right:36px;}
+    .sheet h2 {font-size:29px; font-weight:600; line-height:1.13; overflow-wrap:anywhere; padding-right:18px;}
+    .detail-place {color:var(--dim); font-size:14px; margin-top:8px; line-height:1.4;}
+    .detail-score {margin-top:22px; display:flex; align-items:baseline; gap:10px; background:var(--card); border-radius:12px; padding:14px 16px;}
+    .detail-score span {color:var(--dim); font-size:12px;}
+    .detail-score strong {margin-left:auto; color:var(--accent); font-size:21px; font-weight:700;}
+    .meta-block {margin-top:20px;}
+    .meta-label {color:var(--dim); font-size:10px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; margin-bottom:7px;}
+    .meta-value {font-size:15px; line-height:1.55; overflow-wrap:anywhere;}
+    .maps-link {display:flex; justify-content:center; align-items:center; gap:9px; text-align:center; color:#24170e; background:var(--accent); border-radius:13px; padding:15px; font-size:14px; font-weight:700; text-decoration:none; margin:27px 0 3px;}
+    .maps-link:active {background:#f2ce98;}
+    .maps-hint {font-size:11px; color:var(--dim); margin:11px 0 0; text-align:center; line-height:1.45;}
+    .loader {position:fixed; z-index:100; inset:0; background:var(--bg); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:13px; text-align:center; padding:25px; color:var(--dim); font-size:14px;}
+    .loader.hidden {display:none;}
+    .loader .big {font-size:42px; animation:pulse 1.4s infinite;}
+    @keyframes pulse {50% {transform:scale(1.09); opacity:.7;}}
+    .retry {margin-top:7px; border:1px solid var(--accent-dark); border-radius:10px; background:var(--card); color:var(--accent); padding:10px 18px; font-weight:700; cursor:pointer;}
+    .toast {position:fixed; z-index:90; bottom:calc(20px + env(safe-area-inset-bottom,0px)); left:50%; transform:translate(-50%,15px); opacity:0; pointer-events:none; transition:.25s; background:#ebc28d; color:#24170e; font-weight:700; font-size:12px; padding:11px 18px; border-radius:20px; box-shadow:0 10px 35px #0008; white-space:nowrap;}
+    .toast.show {transform:translate(-50%,0); opacity:1;}
+    @media(max-width:360px) {
+      .top{padding-left:15px; padding-right:15px;}
+      main{padding-left:15px; padding-right:15px;}
+      .list-head{margin-left:15px; margin-right:15px;}
+      .tab{padding:8px 10px; font-size:11px;}
+      .card-name{font-size:16px;}
+      .controls{grid-template-columns:minmax(0,1fr) 110px;}
+    }
+    @media(min-width:690px){body{background:#100a09 radial-gradient(circle at 50% 0,#312016, #100a09 55%);}}
+    @media(prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important;}}
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <div class="top">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 30 30"><path d="M8 2.8v9.5M4.6 2.8v9.5M11.3 2.8v9.5M4.6 12.3c0 3.8 6.7 3.8 6.7 0M8 15.1v12"/><path d="M22 2.8c-4.6 4.3-5.1 10.2-5.1 13.2h5.1M22 2.8v24.3"/></svg>
+      </div>
+      <div><div class="eyebrow">I posti da ricordare</div><h1>Il Taccuino</h1></div>
+    </div>
+    <div class="subline"><div class="intro" id="intro">La tua guida personale, sempre a portata di mano.</div><button type="button" id="refresh" class="refresh" aria-label="Aggiorna l'elenco dal file di testo">↻ Aggiorna</button></div>
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.7"/><path d="m16 16 5 5"/></svg>
+      <input type="search" id="search" placeholder="Cerca nome, località o nota..." autocomplete="off" spellcheck="false" aria-label="Cerca un ristorante">
+      <button class="clear" id="clear" type="button" aria-label="Cancella ricerca" hidden>✕</button>
+    </div>
+    <nav class="tabs" id="tabs" aria-label="Seleziona la raccolta">
+      <button type="button" class="tab" data-group="tutte" aria-pressed="false">Tutti</button>
+      <button type="button" class="tab active" data-group="Liguria & dintorni" aria-pressed="true">Liguria & dintorni</button>
+      <button type="button" class="tab" data-group="Altrove" aria-pressed="false">Altrove</button>
+    </nav>
+    <div class="controls">
+      <label class="control"><span>Zona</span><div class="select-wrap"><select id="zone" aria-label="Seleziona la zona"><option value="tutte">Tutte le zone</option></select></div></label>
+      <label class="control"><span>Ordina per</span><div class="select-wrap"><select id="sort" aria-label="Ordina ristoranti"><option value="name">Nome A–Z</option><option value="rating">Voto ★</option></select></div></label>
+    </div>
+  </div>
+  <div class="list-head"><div id="resultCount" class="result-count" aria-live="polite">Caricamento…</div><div id="connection" class="connection" aria-live="polite"></div></div>
+  <main id="list" aria-label="Elenco dei ristoranti"></main>
+</div>
+
+<div class="loader" id="loader" role="status" aria-live="polite"><span class="big">🍽️</span><div>Sto apparecchiando il Taccuino…</div></div>
+<div class="overlay" id="overlay" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="detailName" tabindex="-1">
+    <div class="grabber"></div>
+    <button type="button" id="close" class="x-btn" aria-label="Chiudi scheda">✕</button>
+    <div class="sheet-kicker">✦ Scheda ristorante</div>
+    <h2 id="detailName"></h2>
+    <div id="detailPlace" class="detail-place"></div>
+    <div id="scoreBox" class="detail-score"><span>Valutazione annotata</span><strong id="detailScore"></strong></div>
+    <div class="meta-block"><div class="meta-label">Zona</div><div class="meta-value" id="detailZone"></div></div>
+    <div class="meta-block"><div class="meta-label">Raccolta</div><div class="meta-value" id="detailGroup"></div></div>
+    <div class="meta-block" id="noteBlock" hidden><div class="meta-label">Note</div><div class="meta-value" id="detailNote"></div></div>
+    <a class="maps-link" id="mapsLink" href="#" target="_blank" rel="noopener noreferrer">⌖ &nbsp; Cerca su Google Maps ↗</a>
+    <p class="maps-hint">Apre una ricerca: controlla il locale prima di partire.</p>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+'use strict';
+// Il file ristoranti.txt è l'UNICA fonte dati. Nessuna registrazione o database esterno.
+const state={all:[],group:'Liguria & dintorni',zone:'tutte',sort:'name'};
+const $=id=>document.getElementById(id);
+const collator=new Intl.Collator('it',{sensitivity:'base',numeric:true,ignorePunctuation:true});
+const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+const folded=s=>String(s??'').toLocaleLowerCase('it').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+let focusBeforeModal=null,toastTimer;
+
+function parseRestaurants(txt){
+  let group='',zone='',items=[];
+  txt.replace(/^\uFEFF/,'').split(/\r?\n/).forEach((raw,i)=>{
+    const line=raw.trim();
+    if(!line)return;
+    if(line.startsWith('##')){
+      const p=line.slice(2).split('|').map(x=>x.trim());
+      if(p.length!==2 || !p[0] || !p[1])throw new Error(`Intestazione non valida, riga ${i+1}`);
+      [group,zone]=p;return;
+    }
+    if(line.startsWith('#'))return;
+    if(!group||!zone)throw new Error(`Manca la zona prima della riga ${i+1}`);
+    const p=line.split('|').map(x=>x.trim());
+    if(p.length>4||!p[0])throw new Error(`Formato errato, riga ${i+1}`);
+    const [name,place='',rating='',note='']=p;
+    if(rating && !/^\d(?:[.,]\d)?$/.test(rating))throw new Error(`Voto non valido, riga ${i+1}`);
+    items.push({name,place,rating:rating.replace(',','.'),note,group,zone});
+  });
+  if(!items.length)throw new Error('Nessun ristorante presente in ristoranti.txt');
+  return items;
+}
+function setTabs(){
+  document.querySelectorAll('.tab').forEach(btn=>{
+    const active=btn.dataset.group===state.group;
+    btn.classList.toggle('active',active);
+    btn.setAttribute('aria-pressed',String(active));
+  });
+}
+function updateZones(){
+  const select=$('zone');
+  const current=state.zone;
+  const zones=[...new Set(state.all.filter(r=>state.group==='tutte'||r.group===state.group).map(r=>r.zone))].sort(collator.compare);
+  select.replaceChildren(new Option('Tutte le zone','tutte'));
+  zones.forEach(z=>select.add(new Option(z,z)));
+  state.zone=zones.includes(current)?current:'tutte';
+  select.value=state.zone;
+}
+function getResults(){
+  const q=folded($('search').value.trim());
+  return state.all.filter(r=>(state.group==='tutte'||r.group===state.group)
+    &&(state.zone==='tutte'||r.zone===state.zone)
+    &&(!q||folded([r.name,r.place,r.zone,r.note,r.group].join(' ')).includes(q)))
+    .sort((a,b)=>{
+      if(state.sort==='rating'){
+        const difference=(parseFloat(b.rating)||0)-(parseFloat(a.rating)||0);
+        if(difference)return difference;
+      }
+      return collator.compare(a.name,b.name);
+    });
+}
+function render(){
+  const data=getResults();
+  $('intro').textContent=`${state.all.length} ristoranti · ${new Set(state.all.map(r=>r.zone)).size} zone da esplorare`;
+  $('resultCount').innerHTML=`<b>${data.length}</b> ${data.length===1?'ristorante trovato':'ristoranti trovati'}`;
+  $('clear').hidden=!$('search').value;
+  const list=$('list');
+  if(!data.length){
+    list.innerHTML='<div class="empty"><span class="emoji">🍴</span><strong>Nessun risultato</strong>Prova a cambiare zona o a cancellare la ricerca.</div>';
+    return;
+  }
+  list.innerHTML=data.map(r=>{
+    const id=state.all.indexOf(r);
+    return `<button type="button" class="restaurant-card" data-id="${id}" aria-label="Apri ${esc(r.name)}">
+      <div class="card-info"><div class="card-name">${esc(r.name)}</div>
+      <div class="card-place">${esc(r.place||r.zone)}</div>
+      ${state.zone==='tutte'?`<div class="card-area">${esc(r.zone)}</div>`:''}</div>
+      <div class="card-right">${r.rating?`<div class="score"><span class="star">★</span>${esc(r.rating)}</div><div class="score-label">Voto</div>`:''}<div class="chev">›</div></div>
+    </button>`;
+  }).join('');
+}
+function openDetail(r){
+  focusBeforeModal=document.activeElement;
+  $('detailName').textContent=r.name;
+  $('detailPlace').textContent=r.place||'Località non indicata nel documento';
+  $('detailScore').textContent=r.rating?'★ '+r.rating:'—';
+  $('detailZone').textContent=r.zone;
+  $('detailGroup').textContent=r.group;
+  $('noteBlock').hidden=!r.note;
+  $('detailNote').textContent=r.note;
+  const search=[r.name,r.place||r.zone].filter(Boolean).join(' ');
+  $('mapsLink').href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(search);
+  $('overlay').classList.add('show');
+  $('overlay').setAttribute('aria-hidden','false');
+  document.querySelector('.sheet').scrollTop=0;
+  $('close').focus();
+}
+function closeDetail(){
+  $('overlay').classList.remove('show');
+  $('overlay').setAttribute('aria-hidden','true');
+  if(focusBeforeModal && focusBeforeModal.isConnected)focusBeforeModal.focus();
+}
+function toast(message){
+  clearTimeout(toastTimer);
+  const el=$('toast');el.textContent=message;el.classList.add('show');
+  toastTimer=setTimeout(()=>el.classList.remove('show'),2300);
+}
+function connectionStatus(){
+  const offline=!navigator.onLine;
+  $('connection').textContent=offline?'● Offline':'● Online';
+  $('connection').classList.toggle('is-offline',offline);
+}
+async function init(isRefresh=false){
+  $('refresh').disabled=true;
+  if(!isRefresh){$('loader').classList.remove('hidden');}
+  try{
+    // Sempre prima dalla rete; il service worker ripiega sulla copia offline.
+    const res=await fetch('./ristoranti.txt',{cache:'no-store'});
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const parsed=parseRestaurants(await res.text());
+    state.all=parsed;
+    updateZones();setTabs();render();
+    $('loader').classList.add('hidden');
+    if(isRefresh)toast('Taccuino aggiornato ✓');
+  }catch(e){
+    console.error(e);
+    if(!state.all.length){
+      const msg=esc(e.message||'Errore sconosciuto');
+      $('loader').innerHTML=`<span class="big">⚠️</span><div>Impossibile leggere <b>ristoranti.txt</b>.<br>Metti tutti i file nella stessa cartella su GitHub Pages.<br><small>${msg}</small></div><button id="retry" class="retry" type="button">Riprova</button>`;
+      $('retry').addEventListener('click',()=>init());
+    }else toast('Aggiornamento non riuscito: elenco precedente conservato');
+  }finally{$('refresh').disabled=false;}
+}
+$('tabs').addEventListener('click',e=>{
+  const btn=e.target.closest('[data-group]');
+  if(!btn)return;
+  state.group=btn.dataset.group;state.zone='tutte';
+  setTabs();updateZones();render();$('list').scrollTop=0;
+});
+$('zone').addEventListener('change',e=>{state.zone=e.target.value;render();$('list').scrollTop=0;});
+$('sort').addEventListener('change',e=>{state.sort=e.target.value;render();$('list').scrollTop=0;});
+$('search').addEventListener('input',()=>{render();$('list').scrollTop=0;});
+$('clear').addEventListener('click',()=>{$('search').value='';render();$('search').focus();});
+$('list').addEventListener('click',e=>{
+  const card=e.target.closest('[data-id]');
+  if(card)openDetail(state.all[Number(card.dataset.id)]);
+});
+$('close').addEventListener('click',closeDetail);
+$('overlay').addEventListener('click',e=>{if(e.target===$('overlay'))closeDetail();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('overlay').classList.contains('show'))closeDetail();});
+$('refresh').addEventListener('click',()=>init(true));
+window.addEventListener('online',connectionStatus);
+window.addEventListener('offline',connectionStatus);
+connectionStatus();
+init();
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(console.warn));
+}
+</script>
+</body>
+</html>

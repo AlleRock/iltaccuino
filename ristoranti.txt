@@ -1,0 +1,108 @@
+# IL TACCUINO — archivio ristoranti
+
+# Modifica questo file direttamente su GitHub quando vuoi aggiungere un locale.
+# Le sezioni iniziano con: ## Raccolta | Zona
+# Ogni ristorante occupa una riga: Nome | Località | Voto | Nota
+# I campi Località, Voto e Nota possono essere lasciati vuoti.
+# Il voto è quello annotato nei tuoi documenti, NON una valutazione aggiornata in tempo reale.
+# Esempio: Trattoria Esempio | Genova | 4.6 | Da provare
+# Le righe che iniziano con # vengono ignorate. Evita il carattere | dentro i campi.
+
+# ===== LIGURIA & DINTORNI =====
+## Liguria & dintorni | BASSOPIEMONTE
+Al Chiar Di Luna (Agriturismo) | Tagliolo Monferrato (AL) | 4.7 | 
+Ar Dou Veje | Silvano D'Orba (AL) | 4.4 | 
+La Cascina | San Giuliano Vecchio (AL) | 4.3 | 
+Trattoria Mascon | Arquata Scrivia (AL) | 4.5 | 
+
+## Liguria & dintorni | CAMPO LIGURE / MASONE / ROSSIGLIONE
+Da Pippi | Masone (GE) | 4.6 | 
+Dei Cacciatori | Rossiglione (GE) | 4.4 | 
+
+## Liguria & dintorni | GENOVA CENTRO
+Anatolia - Grill & Chicken | Genova | 4.9 | 
+Antica Osteria Reatin | Genova | 4.6 | 
+Byblos Ristorante Libanese | Genova | 4.1 | 
+Dim Sum Tang - Trattoria Cinese contemporanea | Genova | 4.2 | 
+Osteria Il Cadraio | Genova | 4.3 | 
+Le Rune | Genova | 4.7 | 
+Locanda Antichi Sapori | Genova | 4.4 | 
+Ostaia De Banchi | Genova | 4.5 | 
+Osteria Amori E Sapori | Genova | 4.2 | 
+Tamashi Fish Market | Genova | 4.9 | 
+Trattoria Del Parroco Dal 1872 | Genova | 4.2 | 
+Trattoria San Carlo | Genova | 4.5 | 
+
+## Liguria & dintorni | GENOVA LEVANTE
+Osteria La Baita | Recco (GE) | 4.5 | 
+
+## Liguria & dintorni | GENOVA PONENTE
+A Ca' Do Dria | Fiorino (GE) | 4.6 | 
+Osteria Dell'Acquasanta | Acquasanta (GE) | 4.3 | 
+Ristorante Da Dria | Acquasanta (GE) | 4.5 | 
+
+## Liguria & dintorni | RIVIERA LEVANTE
+Agriturismo Ca' De Drin | San Maurizio Di Monti | 4.1 | 
+Locanda Veleura | Castiglione Chiavarese | 4.8 | 
+Trattoria Rosa | San Maurizio Di Monti | 4.4 | 
+
+## Liguria & dintorni | RIVIERA PONENTE
+Il Portico | Orco Feglino (SV) | 4.6 | 
+
+## Liguria & dintorni | VALBISAGNO
+La Pineta | Genova | 4.5 | 
+Trattoria Gesino | Genova | 4.4 | 
+
+## Liguria & dintorni | VALDAVETO
+Agriturismo Villa Cella |  | 4.5 | Trip
+
+## Liguria & dintorni | VALFONTANABUONA / VALGRAVEGLIA
+Agriturismo I Due Somari | Ne (GE) | 4.5 | 
+Ca' Di Prei | Conscenti Di Ne (GE) | 4.9 | 
+La Botte | Monleone (GE) | 4.6 | 
+La Marpea | Ne (GE) | 4.5 | 
+La Quercia | Lumarzo (GE) | 4.5 | 
+La Tagliola | Carpenissone Di Ne' (GE) | 4.6 | 
+Osteria La Greppia | Prato Sopralacroce | 4.5 | 
+Ristorante Pepen | Leivi (GE) | 4.7 | 
+Trattoria Madda | Roccatagliata, Neirone (GE) | 4.8 | 
+Trattoria Marchin | Mezzanego (GE) | 4.5 | 
+
+## Liguria & dintorni | VALLESCRIVIA
+Al Vicolo Di Bacco | Busalla (GE) | 4.6 | 
+Agriturismo La Sereta | Fraconalto | 4.5 | 
+Cascina Salvega | Casella | 4.6 | 
+
+## Liguria & dintorni | VALPOLCEVERA
+Agriturismo Du Sui | Cremeno (GE) | 4.6 | 
+Agriturismo La Fattoria di Marta | Sant'Olcese (GE) | 4.2 | 
+Cascina Castello | Serra Riccò (GE) | 4.7 | 
+Dalle Due Zie | Manesseno (GE) | 4.2 | 
+Il Rifugio | Serra (GE) | 4.5 | 
+La Locanda Di San Biagio | Genova | 4.0 | 
+Massatorrazza | Castagna (GE) | 4.7 | 
+
+## Liguria & dintorni | VALTREBBIA
+Azienda Agricola Spallarossa Silvia | Cassingheno | 4.7 | 
+Taverna Dei Fieschi | Torriglia | 4.4 | 
+
+# ===== ALTROVE =====
+## Altrove | LOMBARDIA
+La Casa dei Nonni | Zenevredo (PV) | 4.4 | 
+
+## Altrove | PIEMONTE
+L’Om De Fer | Sant'Ambrogio di Torino | 4.6 | 
+Osteria Ra Ca' 'd Baruc | Murazzano | 4.7 | + Parco Safari delle Langhe
+Trattoria da Lele | Murazzano | 4.7 | + Parco Safari delle Langhe
+
+## Altrove | PRAGA
+Středověká Krčma | Dětenice | 4.7 | 
+
+## Altrove | TOSCANA
+Agriturismo Montagna Verde | Torre di Apella, Licciana Nardi (MS) | 4.7 | 
+
+## Altrove | TRENTINO
+Malga Ces | San Martino di Castrozza (TN) | 4.6 | 
+
+## Altrove | VAL D’AOSTA
+La Maison de Filippo | Courmayeur (AO) | 4.3 |

@@ -1,0 +1,15 @@
+{
+  "name": "Il Taccuino — Ristoranti",
+  "short_name": "Il Taccuino",
+  "description": "La mia raccolta di ristoranti, per zona.",
+  "lang": "it-IT",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#160f0e",
+  "theme_color": "#160f0e",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ]
+}
